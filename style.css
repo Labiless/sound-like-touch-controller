@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    margin: 0px;
+    background-color: black;
+    overflow: hidden;
+    height: 100vh;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 5%;
+    border-bottom: 1px solid yellow;
+}
+
+main {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    height: 95%;
+}
+
+#loading {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(0, 0, 0, 0.678);
+    z-index: 10;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading>div {
+    background-color: transparent;
+    border: 1px solid yellow;
+    height: 100px;
+    width: 100px;
+    animation: spin 1s linear infinite;
+}
+
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+button {
+    cursor: pointer;
+}
+
+header>button {
+    border-bottom: 0px;
+}
+
+header>button:hover {
+    background-color: red;
+    color: yellow;
+}
+
+
+button {
+    background-color: transparent;
+    color: yellow;
+    border: 1px solid yellow;
+    padding: 8px;
+    height: 100%;
+    width: 100px;
+}
+
+button:hover {
+    background-color: yellow;
+    color: black;
+}
+
+#audio-inputs-container {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid yellow;
+    width: fit-content;
+}
+
+.audio-input-button {
+    width: 300px;
+    height: 50px;
+}
+
+#main-content {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.volume-container {
+    width: 100%;
+    border: 1px solid yellow;
+    font-size: 8px;
+    color: yellow;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    margin: auto;
+    border-left: 0px;
+    height: 100%;
+    padding: 8px 0px;
+    text-align: center;
+}
+
+.volume-level {
+    background-color: yellow;
+    width: 100%;
+}
+
+#esp32-signals-container,
+#midi-signals-container {
+    width: 100%;
+    border-bottom: 1px solid yellow;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.esp32-output {
+    border-right: 1px solid yellow;
+    flex-grow: 1;
+}
+
+.midi-output {
+    border-right: 1px solid yellow;
+    flex-grow: 1;
+}
+
+#audio-levels-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: 1fr;
+    gap: 0px;
+}
