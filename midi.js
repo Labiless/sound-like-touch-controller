@@ -3,10 +3,8 @@ let midiOutput = null;
 const initMidi = async () => {
   try {
     const midiAccess = await navigator.requestMIDIAccess();
-    console.log("initMidi");
     const outputs = Array.from(midiAccess.outputs.values());
-    console.log("initMidi", outputs);
-    midiOutput = outputs[1];
+    midiOutput = outputs[prompt(outputs.map((el, i) => i + ") " + el.name + "\n"))];
   } catch (error) {
     console.log(error);
   }
@@ -26,10 +24,12 @@ const sendNote = (note) => {
   }, 200);
 }
 
-const sendRandomNote = () => {
+const sendRandomNote = (min = 20, max = 120) => {
+  console.log(min, max);
   if (!midiOutput) return;
-  const note = randomInt(20, 120);
+  const note = randomInt(+min, +max);
   // Note ON (ch 1, note rand, velocity 100)
+  console.log(note);
   midiOutput.send([0x90, note, 100]);
   setTimeout(() => {
     midiOutput.send([0x80, note, 0]);

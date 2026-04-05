@@ -16,6 +16,9 @@
         <button id="init-audio-button" onclick="initAudio()">Start Adudio</button>
         <button onclick="initEsp32()">Start Esp32</button>
         <button onclick="initMidi()">Start Midi</button>
+        <div>
+            <input type="range" min="0" max="100" value="20" id="treshold-control" />
+        </div>
     </header>
     <main>
         <div id="audio-inputs-container">
@@ -52,43 +55,9 @@
     <script src="esp32.js"></script>
     <script src="midi.js"></script>
     <script>
-
         const loading = (status) => {
             document.querySelector("#loading").style.display = status ? "flex" : "none";
         }
-
-        /*window.addEventListener("treshold-input-0", async e => {
-            if(writer){
-                await lightOnAndOff(4, 300);
-            }
-            if(midiOutput){
-                sendRandomNote();
-            }
-        })
-        window.addEventListener("treshold-input-14", async e => {
-            if(writer){
-                await lightOnAndOff(6, 300);
-            }
-            if(midiOutput){
-                sendRandomNote();
-            }
-        });
-        window.addEventListener("treshold-input-3", e => {
-
-        });
-        window.addEventListener("treshold-input-4", e => {
-
-        });
-        window.addEventListener("treshold-input-5", e => {
-
-        });
-        window.addEventListener("treshold-input-6", e => {
-
-        });
-        window.addEventListener("treshold-input-7", e => {
-
-        });*/
-
     </script>
 
 

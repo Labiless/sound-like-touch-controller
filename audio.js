@@ -1,6 +1,8 @@
 let audioContext;
 let cont = 0;
 let devices, audioInuputs;
+let selectedAudioCount = 0;
+let tresholdLevel = 20;
 
 
 const audioInputsContainer = document.querySelector("#audio-inputs-container");
@@ -16,22 +18,23 @@ const displayAudioInputs = async () => {
         button.innerText = audioInput.label;
         button.addEventListener("click", async (e) => {
             const eventName = "treshold-input-" + i;
-            console.log(eventName)
+            const lightIndex = selectedAudioCount;
             window.addEventListener(eventName, async e => {
                 const data = e.detail;
                 const isTreshold = data.isTreshold;
                 if (isTreshold) {
                     data.audioLevelDisplay.level.style.backgroundColor = "blue";
                     if (midiOutput) {
-                        sendRandomNote();
+                        sendRandomNote(data.midiMin, data.midiMax);
                     }
                 } else {
                     data.audioLevelDisplay.level.style.backgroundColor = "yellow";
                 }
                 if (writer) {
-                    await lightOnAndOff(i, 100, isTreshold);
+                    await lightOnAndOff(lightIndex, 100, isTreshold);
                 }
             })
+            selectedAudioCount++;
             await connectAudioInput(audioInput.label,
                 data => {
                     window.dispatchEvent(
@@ -53,14 +56,14 @@ const connectAudioInput = async (inputLabel, trasholdCallback = null, untrashold
     loading(true);
 
     let isTreshold = false;
-    let tresholdLevel = 10;
     let rmsMultiplier = 800;
 
     const audioInput = audioInputs.find(el => el.label === inputLabel)
     const stream = await getAudioInputStream(audioInput.deviceId);
     const levelMeter = createLevelMeter(stream);
-
     const audioLevelDisplay = createAudioLevelDisplay(audioInput.label);
+    const midiInputRange = createMidiRangeInput();
+    audioLevelDisplay.container.appendChild(midiInputRange.container);
     audioLevelsContainer.appendChild(audioLevelDisplay.container)
 
     let lastIsTreshold = false;
@@ -72,7 +75,11 @@ const connectAudioInput = async (inputLabel, trasholdCallback = null, untrashold
         isTreshold = value > tresholdLevel;
         const callbackData = { value, audioLevelDisplay, isTreshold };
         if (isTreshold && isTreshold !== lastIsTreshold) {
-            if (trasholdCallback) trasholdCallback(callbackData);
+            if (trasholdCallback) trasholdCallback({
+                ...callbackData,
+                midiMin : midiInputRange.midiMinInput.value,
+                midiMax : midiInputRange.midiMaxInput.value
+            });
         }
         if (!isTreshold && isTreshold !== lastIsTreshold) {
             if (untrasholdCallback) untrasholdCallback(callbackData);
@@ -109,6 +116,20 @@ const createAudioLevelDisplay = (label) => {
     return { container, level, setLevel };
 }
 
+const createMidiRangeInput = () => {
+    const container = document.createElement("div");
+    container.classList.add("midi-range-input-container")
+    const midiMinInput = document.createElement("input");
+    const midiMaxInput = document.createElement("input");
+    midiMinInput.type = "number";
+    midiMaxInput.type = "number";
+    midiMinInput.value = 20;
+    midiMaxInput.value = 120;
+    container.appendChild(midiMinInput);
+    container.appendChild(midiMaxInput);
+    return {container, midiMinInput, midiMaxInput};
+}
+
 function createLevelMeter(stream) {
     const source = audioContext.createMediaStreamSource(stream);
     const analyser = audioContext.createAnalyser();
@@ -141,5 +162,8 @@ const initAudio = async () => {
     audioContext = new AudioContext();
     await navigator.mediaDevices.getUserMedia({ audio: true });
     await displayAudioInputs();
+    document.querySelector("#treshold-control").addEventListener("input", (e) => {
+        tresholdLevel = parseInt(e.target.value);
+    });
     loading(false);
 }

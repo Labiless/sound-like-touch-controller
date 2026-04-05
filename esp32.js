@@ -4,7 +4,7 @@ let reader;
 const encoder = new TextEncoder();
 const decoder = new TextDecoderStream();
 
-const channelMap = [2, 4, 5, 16, 17, 18, 19, 21];
+const channelMap = [2, 4, 16, 17, 18, 19, 21];
 
 const initEsp32 = async () => {
     loading(true);
@@ -31,14 +31,7 @@ const sendMessage = async (msg) => {
 
 const lightOnAndOff = async (channel, timer, isTreshold) => {
     mappedChannel = channelMap[channel];
-    console.log(mappedChannel)
     const el = document.querySelectorAll(".esp32-output")[channel];
-    /*await sendMessage(channel + "_1");
-    el.style.backgroundColor = "yellow";
-    setTimeout(async () => {
-        await sendMessage(channel + "_0");
-        el.style.backgroundColor = "transparent";
-    }, timer)*/
     if (isTreshold) {
         sendMessage(mappedChannel + "_0");
         el.style.backgroundColor = "yellow";
