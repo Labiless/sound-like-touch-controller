@@ -24,14 +24,16 @@ const sendNote = (note) => {
   }, 200);
 }
 
-const sendRandomNote = (min = 20, max = 120) => {
-  console.log(min, max);
+const sendRandomNote = (min = 20, max = 120, inputIndex) => {
   if (!midiOutput) return;
   const note = randomInt(+min, +max);
   // Note ON (ch 1, note rand, velocity 100)
-  console.log(note);
+  const midiElement = document.querySelectorAll(".midi-output")[inputIndex - 1];
+  midiElement.style.color = "yellow";
+  midiElement.textContent = note;
   midiOutput.send([0x90, note, 100]);
   setTimeout(() => {
     midiOutput.send([0x80, note, 0]);
+    midiElement.style.color = "black";
   }, 200);
 }
