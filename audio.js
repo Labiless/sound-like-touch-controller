@@ -25,7 +25,7 @@ const displayAudioInputs = async () => {
                 if (isTreshold) {
                     data.audioLevelDisplay.level.style.backgroundColor = "blue";
                     if (midiOutput) {
-                        sendRandomNote(data.midiMin, data.midiMax, selectedAudioCount);
+                        sendRandomNote(data.midiMin, data.midiMax, lightIndex);
                     }
                 } else {
                     data.audioLevelDisplay.level.style.backgroundColor = "yellow";
